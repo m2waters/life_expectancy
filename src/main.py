@@ -21,6 +21,15 @@ def summary_statistics(df):
     plt.clf()
 
 
+def plot_graph(x, y):
+
+    plt.plot(x, y)
+
+    plt.show()
+    plt.clf()
+
+
+
 if __name__ == "__main__":
 
     df = load_data('data\\all_data.csv')
