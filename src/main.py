@@ -7,6 +7,7 @@ from country import country
 def load_data(path):
     
     df = pd.read_csv(path)
+    df.rename(columns={"Country": "country", "Year": "year", "Life expectancy at birth (years)" : "life_expectancy", "GDP": "gdp"}, inplace=True)
     
     return df
 
@@ -15,15 +16,15 @@ def summary_statistics(df):
 
     print(df.head())
     print(df.describe())
-    print(df["Country"].unique())
+    print(df["country"].unique())
 
-    df_corr = df.drop(["Country"], axis=1)
+    df_corr = df.drop(["country"], axis=1)
     correlation_matrix = df_corr.corr()
     sns.heatmap(correlation_matrix, annot=True, cmap='coolwarm')
     plt.show()
     plt.clf()
 
-def create_df_name(country):
+def sluggify(country):
 
     country = country.lower()
     special_characters = r'[^A-Za-z0-9\s-]'
@@ -31,18 +32,18 @@ def create_df_name(country):
     country = re.sub(r'\s+', "_", country)
 
 
-    return "df_" + country
+    return country
 
 def create_country_instance(country_string, dataframe):
-    country_string_cleaned = create_df_name(country_string)
+    country_string_cleaned = sluggify(country_string)
     return country(country_string_cleaned, dataframe)
 
 
 def group_by_country(df):
 
-    countries = df["Country"].unique()
+    countries = df["country"].unique()
 
-    df_country = df.groupby('Country')
+    df_country = df.groupby('country')
     list_of_dfs = [df_country.get_group(x) for x in df_country.groups]   
     
     chile = create_country_instance(countries[0], list_of_dfs[0])
@@ -60,9 +61,13 @@ def group_by_country(df):
 
 
 
-def plot_graph(x, y):
+def plot_country_vs_life_expectancy(country):
 
-    plt.plot(x, y)
+    
+
+    plt.plot(country.dataframe["year"], country.dataframe["life_expectancy"])
+
+    plt.suptitle(f"Graph showing life expectancy vs year for {country.name}")
 
     plt.show()
     plt.clf()
@@ -90,4 +95,12 @@ if __name__ == "__main__":
 
     chile, china, germany, mexico, united_states, zimbabwe = group_by_country(df)
 
-    #plot_graph(zimbabwe.dataframe["Year"], zimbabwe.dataframe[])
+    list_of_countries = [chile, china, germany, mexico, united_states, zimbabwe]
+    plt.figure(figsize=(15, 10))
+    for i in list_of_countries:
+        i.plot_life_expectancy(title=False)
+    
+    plt.legend(loc="center right", bbox_to_anchor=(1.10, 0.63), ncol=1, fancybox=True, shadow=True)
+    plt.suptitle("Plot of the life expectancy at birth against Year")
+    # zimbabwe.plot_life_expectancy(title=False)
+    plt.show()
