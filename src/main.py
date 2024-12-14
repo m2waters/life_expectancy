@@ -2,6 +2,7 @@ import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
 import re
+from country import country
 
 def load_data(path):
     
@@ -32,24 +33,28 @@ def create_df_name(country):
 
     return "df_" + country
 
+def create_country_instance(country_string, dataframe):
+    country_string_cleaned = create_df_name(country_string)
+    return country(country_string_cleaned, dataframe)
 
 
 def group_by_country(df):
 
     countries = df["Country"].unique()
 
-    # df_chile = df[df["Country"] == "chile"]
-
     df_country = df.groupby('Country')
-    list_of_dfs = [df_country.get_group(x) for x in df_country.groups]
+    list_of_dfs = [df_country.get_group(x) for x in df_country.groups]   
     
-    for i in range(len(countries)):
-        
-        df_name = create_df_name(countries[i])
-        print(df_name)
+    chile = create_country_instance(countries[0], list_of_dfs[0])
+    china = create_country_instance(countries[1], list_of_dfs[1])
+    germany = create_country_instance(countries[2], list_of_dfs[2])
+    mexico = create_country_instance(countries[3], list_of_dfs[3])
+    united_states = create_country_instance(countries[4], list_of_dfs[4])
+    zimbabwe = create_country_instance(countries[5], list_of_dfs[5])
 
-        print(list_of_dfs[i].head())
+    print(zimbabwe.dataframe)
 
+    return (chile, china, germany, mexico, united_states, zimbabwe)
     #for country in countries:
 
 
@@ -83,4 +88,6 @@ if __name__ == "__main__":
         else:
             print("Please input Y or N to make a decision:")
 
-    group_by_country(df)
+    chile, china, germany, mexico, united_states, zimbabwe = group_by_country(df)
+
+    #plot_graph(zimbabwe.dataframe["Year"], zimbabwe.dataframe[])
