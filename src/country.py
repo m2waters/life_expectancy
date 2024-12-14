@@ -1,4 +1,4 @@
-import pandas
+import pandas as pd
 import matplotlib.pyplot as plt
 
 class country:
@@ -7,12 +7,16 @@ class country:
         self.name = name
         self.dataframe = dataframe
 
-    def plot_life_expectancy(self, title: bool=True):
+    def plot_life_expectancy(self, ax=plt, title: bool=True, mean=None):
+        ax.plot(self.dataframe["year"], self.dataframe["life_expectancy"], label=self.name)
 
-        plt.plot(self.dataframe["year"], self.dataframe["life_expectancy"], label=self.name)
+        if mean != None:
+            ax.plot(self.dataframe["year"], mean)
 
         if title:
-            plt.suptitle(f"Graph showing life expectancy vs year for {self.name}")
+            ax.set_title(f"{self.name} Life Expectancy vs Year")
+
+    
 
         
         
