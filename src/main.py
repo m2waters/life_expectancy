@@ -63,8 +63,6 @@ def group_by_country(df):
     united_states = create_country_instance(countries[4], list_of_dfs[4])
     zimbabwe = create_country_instance(countries[5], list_of_dfs[5])
 
-    print(zimbabwe.dataframe)
-
     return (chile, china, germany, mexico, united_states, zimbabwe)
     
 
@@ -109,10 +107,11 @@ if __name__ == "__main__":
 
     plt.figure(figsize=(12, 8))
 
-    for i in list_of_countries:
-        i.plot_life_expectancy(title=False)
+    colors = ["tab:blue", "tab:orange", "tab:green", "tab:red", "tab:purple", "tab:brown"]
+    for i in range(len(list_of_countries)):
+        list_of_countries[i].plot_life_expectancy(title=False, color=colors[i])
 
-    plt.plot(chile.dataframe['year'].unique(), mean_life_expectancy, label="mean", linestyle='--')
+    plt.plot(chile.dataframe['year'].unique(), mean_life_expectancy, label="mean", linestyle='--', color="tab:gray")
 
     plt.legend(loc="center right", bbox_to_anchor=(1.10, 0.63), ncol=1, fancybox=True, shadow=True)
     plt.suptitle("Plot of the life expectancy at birth against Year")
@@ -120,11 +119,11 @@ if __name__ == "__main__":
 
     fig, axs = plt.subplots(2, 3, figsize=(18, 8))
     
-    chile.plot_life_expectancy(ax=axs[0,0], mean=mean_life_expectancy)
-    china.plot_life_expectancy(ax=axs[0, 1], mean=mean_life_expectancy)
-    germany.plot_life_expectancy(axs[0, 2])
-    mexico.plot_life_expectancy(axs[1, 0])
-    united_states.plot_life_expectancy(axs[1, 1])
-    zimbabwe.plot_life_expectancy(axs[1, 2])
+    chile.plot_life_expectancy(ax=axs[0,0], mean=mean_life_expectancy, color="tab:blue")
+    china.plot_life_expectancy(ax=axs[0, 1], mean=mean_life_expectancy, color="tab:orange")
+    germany.plot_life_expectancy(axs[0, 2], mean=mean_life_expectancy, color="tab:green")
+    mexico.plot_life_expectancy(axs[1, 0], mean=mean_life_expectancy, color="tab:red")
+    united_states.plot_life_expectancy(axs[1, 1], mean=mean_life_expectancy, color="tab:purple")
+    zimbabwe.plot_life_expectancy(axs[1, 2], mean=mean_life_expectancy, color="tab:brown")
   
     plt.show()
