@@ -25,8 +25,8 @@ def summary_statistics(df):
     correlation_matrix = df_corr.corr()
 
     sns.heatmap(correlation_matrix, annot=True, cmap='coolwarm')
-    plt.show()
-    plt.clf()
+    plt.savefig("./figures/correlation_matrix.png")
+    plt.close()
 
 
 def sluggify(country):
