@@ -2,3 +2,4 @@ life_expectancy_gdp.ipynb
 .ipynb_checkpoints
 venv
 src/__pycache__
+figures
