@@ -3,7 +3,7 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 import re
 from country import country
-
+import os
 
 def load_data(path):
     # Loads the data csv into a dataframe
@@ -80,6 +80,10 @@ def calculate_global_mean(df):
 
 if __name__ == "__main__":
 
+    graph_folder = r'./figures'
+    if not os.path.exists(graph_folder):
+        os.makedirs(graph_folder)
+
     df = load_data('data\\all_data.csv')
 
     print("Would you like to see summary statitics? (Y/N)")
@@ -116,6 +120,7 @@ if __name__ == "__main__":
     plt.legend(loc="center right", bbox_to_anchor=(1.10, 0.63), ncol=1, fancybox=True, shadow=True)
     plt.suptitle("Plot of the life expectancy at birth against Year")
 
+    plt.savefig("./figures/country_comparison.png")
 
     fig, axs = plt.subplots(2, 3, figsize=(18, 8))
     
@@ -125,5 +130,8 @@ if __name__ == "__main__":
     mexico.plot_life_expectancy(axs[1, 0], mean=mean_life_expectancy, color="tab:red")
     united_states.plot_life_expectancy(axs[1, 1], mean=mean_life_expectancy, color="tab:purple")
     zimbabwe.plot_life_expectancy(axs[1, 2], mean=mean_life_expectancy, color="tab:brown")
-  
-    plt.show()
+    
+
+    plt.savefig("./figures/individual_country_life_expectancy.png")
+
+    plt.close()
